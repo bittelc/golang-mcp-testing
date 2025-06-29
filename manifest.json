@@ -1,0 +1,35 @@
+{
+  "dxt_version": "0.1",
+  "name": "golang-mcp-testing",
+  "version": "1.0.0",
+  "description": "Access personal dropbox folders",
+  "author": {
+    "name": "Cole Bittel",
+    "url": "@bittelc"
+  },
+  "server": {
+    "type": "binary",
+    "entry_point": "golang-mcp-testing",
+    "mcp_config": {
+      "command": "${__dirname}/golang-mcp-testing",
+      "args": [],
+      "env": {}
+    }
+  },
+  "tools": [
+    {
+      "name": "list_dropbox_folders",
+      "description": "List all dropbox folders within a given path."
+    }
+  ],
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Dropbox API Key",
+      "description": "Your Dropbox API key for authenticating",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "license": "MIT"
+}
