@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"golang-mcp-testing/tools/config"
+	"golang-mcp-testing/tools/terminal"
 
 	"github.com/localrivet/gomcp/server"
 )
@@ -27,8 +28,8 @@ func main() {
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
 
-	s.Tool("set_config_value", "Set a specific configuration value by key.",
-		config.HandleSetConfigValue)
+	// s.Tool("set_config_value", "Set a specific configuration value by key.",
+	// 	config.HandleSetConfigValue)
 
 	// // Filesystem tools
 	// s.Tool("read_file", "Read the contents of a file. Supports optional start_line and end_line parameters for paging.",
@@ -64,21 +65,21 @@ func main() {
 	// s.Tool("precise_edit", "Precisely edit file content based on start and end line numbers.",
 	// 	edit.HandlePreciseEdit)
 
-	// // Terminal tools
-	// s.Tool("execute_command", "Execute a terminal command with timeout.",
-	// 	terminal.HandleExecuteCommand)
+	// Terminal tools
+	s.Tool("execute_command", "Execute a terminal command with timeout.",
+		terminal.HandleExecuteCommand)
 
-	// s.Tool("read_output", "Read new output from a running terminal session.",
-	// 	terminal.HandleReadOutput)
+	s.Tool("read_output", "Read new output from a running terminal session.",
+		terminal.HandleReadOutput)
 
-	// s.Tool("force_terminate", "Force terminate a running terminal session.",
-	// 	terminal.HandleForceTerminate)
+	s.Tool("force_terminate", "Force terminate a running terminal session.",
+		terminal.HandleForceTerminate)
 
-	// s.Tool("list_sessions", "List all active terminal sessions.",
-	// 	terminal.HandleListSessions)
+	s.Tool("list_sessions", "List all active terminal sessions.",
+		terminal.HandleListSessions)
 
-	// s.Tool("execute_in_terminal", "Execute a command in the terminal (client-side execution).",
-	// 	terminal.HandleExecuteInTerminal)
+	s.Tool("execute_in_terminal", "Execute a command in the terminal (client-side execution).",
+		terminal.HandleExecuteInTerminal)
 
 	// // Process tools
 	// s.Tool("list_processes", "List all running processes.",
