@@ -5,13 +5,23 @@ import (
 	"log/slog"
 	"os"
 
+	"golang-mcp-testing/dxt"
 	"golang-mcp-testing/tools/config"
+	"golang-mcp-testing/tools/dropbox"
 	"golang-mcp-testing/tools/terminal"
 
 	"github.com/localrivet/gomcp/server"
 )
 
 func main() {
+	// Parse command line arguments
+	if len(os.Args) > 1 && os.Args[1] == "--create-dxt" {
+		log.Println("Creating DXT manifest...")
+		dxt.CreateDxt()
+		log.Println("DXT manifest created")
+		return
+	}
+
 	// Create a logger
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
@@ -27,43 +37,6 @@ func main() {
 	// Configuration tools
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
-
-	// s.Tool("set_config_value", "Set a specific configuration value by key.",
-	// 	config.HandleSetConfigValue)
-
-	// // Filesystem tools
-	// s.Tool("read_file", "Read the contents of a file. Supports optional start_line and end_line parameters for paging.",
-	// 	filesystem.HandleReadFile)
-
-	// s.Tool("read_multiple_files", "Read the contents of multiple files simultaneously.",
-	// 	filesystem.HandleReadMultipleFiles)
-
-	// s.Tool("write_file", "Completely replace file contents.",
-	// 	filesystem.HandleWriteFile)
-
-	// s.Tool("create_directory", "Create a new directory or ensure a directory exists.",
-	// 	filesystem.HandleCreateDirectory)
-
-	// s.Tool("list_directory", "Get a detailed listing of all files and directories in a specified path.",
-	// 	filesystem.HandleListDirectory)
-
-	// s.Tool("move_file", "Move or rename files and directories.",
-	// 	filesystem.HandleMoveFile)
-
-	// s.Tool("search_files", "Finds files by name using a case-insensitive substring matching.",
-	// 	filesystem.HandleSearchFiles)
-
-	// s.Tool("get_file_info", "Retrieve detailed metadata about a file or directory.",
-	// 	filesystem.HandleGetFileInfo)
-
-	// s.Tool("search_code", "Search for text/code patterns within file contents using pure Go implementation.",
-	// 	search.HandleSearchCode)
-
-	// s.Tool("edit_block", "Apply surgical text replacements to files.",
-	// 	edit.HandleEditBlock)
-
-	// s.Tool("precise_edit", "Precisely edit file content based on start and end line numbers.",
-	// 	edit.HandlePreciseEdit)
 
 	// Terminal tools
 	s.Tool("execute_command", "Execute a terminal command with timeout.",
@@ -81,17 +54,10 @@ func main() {
 	s.Tool("execute_in_terminal", "Execute a command in the terminal (client-side execution).",
 		terminal.HandleExecuteInTerminal)
 
-	// // Process tools
-	// s.Tool("list_processes", "List all running processes.",
-	// 	process.HandleListProcesses)
+	s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
+		dropbox.HandleListDropboxFolders)
 
-	// s.Tool("kill_process", "Terminate a running process by PID.",
-	// 	process.HandleKillProcess)
-
-	// Start the server
-	// logger.Info("Starting Cole MCP server...")
 	if err := s.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)
 	}
-	// logger.Info("Server shutdown complete.")
 }
