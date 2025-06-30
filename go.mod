@@ -3,8 +3,8 @@ module golang-mcp-testing
 go 1.24.2
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/localrivet/gomcp v1.6.5
-	mvdan.cc/sh v2.6.4+incompatible
 )
 
 require (
@@ -14,7 +14,6 @@ require (
 	github.com/gobwas/ws v1.4.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
 	github.com/localrivet/wilduri v0.0.0-20250504021349-6ce732e97cca // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/nats-io/nats.go v1.42.0 // indirect
