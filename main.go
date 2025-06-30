@@ -31,8 +31,11 @@ func main() {
 	// Configuration tools
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
-	a, b := dropbox.HandleListDropboxFolders(serverContext, dropbox.ListDropboxFoldersArgs{Path: ""})
-	spew.Dump(a, b)
+	folders, err := dropbox.HandleListDropboxFolders(serverContext, dropbox.ListDropboxFoldersArgs{Path: ""})
+	if err != nil {
+		log.Fatalf("Failed to list dropbox folders", "error", err)
+	}
+	spew.Dump(folders)
 	// s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
 	// 	dropbox.HandleListDropboxFolders)
 

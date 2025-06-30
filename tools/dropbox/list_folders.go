@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/localrivet/gomcp/server"
 )
 
@@ -23,61 +23,6 @@ type DropboxFolder struct {
 	Tag            string `json:".tag"`
 	SharedFolderID string `json:"shared_folder_id"`
 }
-
-/*
- * {
-   "entries": [
-     {
-       ".tag": "folder",
-       "name": "Family Room",
-       "path_lower": "/family room",
-       "path_display": "/Family Room",
-       "id": "id:cMZquz1z9UkAAAAAAAEusw",
-       "shared_folder_id": "2110133921",
-       "sharing_info": {
-         "read_only": false,
-         "shared_folder_id": "2110133921",
-         "traverse_only": false,
-         "no_access": false
-       }
-     },
-     {
-       ".tag": "folder",
-       "name": "Camera Uploads",
-       "path_lower": "/camera uploads",
-       "path_display": "/Camera Uploads",
-       "id": "id:cMZquz1z9UkAAAAAAAE1aw",
-       "shared_folder_id": "3750858913",
-       "sharing_info": {
-         "read_only": false,
-         "shared_folder_id": "3750858913",
-         "traverse_only": false,
-         "no_access": false
-       }
-     },
-     {
-       ".tag": "folder",
-       "name": "Cole Personal",
-       "path_lower": "/cole personal",
-       "path_display": "/Cole Personal",
-       "id": "id:cMZquz1z9UkAAAAAAAE5SA",
-       "shared_folder_id": "3871520337",
-       "sharing_info": {
-         "read_only": false,
-         "shared_folder_id": "3871520337",
-         "traverse_only": false,
-         "no_access": false
-       }
-     },
-     {
-       ".tag": "folder",
-       "name": "Apps",
-       "path_lower": "/apps",
-       "path_display": "/Apps",
-       "id": "id:cMZquz1z9UkAAAAAAAJTrw"
-     }
-   ],
-*/
 
 const DROPBOX_API_URL = "https://api.dropboxapi.com/2/files/list_folder"
 
@@ -98,7 +43,7 @@ func HandleListDropboxFolders(ctx *server.Context, args ListDropboxFoldersArgs) 
 	}
 	// Make HTTP request to Dropbox API
 	requestBody := map[string]any{
-		"include_deleted":                     true,
+		"include_deleted":                     false,
 		"include_has_explicit_shared_members": false,
 		"include_media_info":                  true,
 		"include_mounted_folders":             true,
@@ -130,8 +75,26 @@ func HandleListDropboxFolders(ctx *server.Context, args ListDropboxFoldersArgs) 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("API request failed with status: %d", resp.StatusCode)
 	}
-	spew.Dump(resp)
-	var folders DropboxFolders
-	ctx.Logger.Info("No dropbox folders at the provided path")
+
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Dropbox API returns folders in an "entries" field
+	type DropboxAPIResponse struct {
+		Entries []DropboxFolder `json:"entries"`
+	}
+
+	var apiResponse DropboxAPIResponse
+	if err := json.Unmarshal(body, &apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal JSON response: %w", err)
+	}
+
+	// Convert to DropboxFolders type
+	folders := DropboxFolders(apiResponse.Entries)
+
+	ctx.Logger.Info("Successfully retrieved dropbox folders", "count", len(folders))
 	return folders, nil
 }
