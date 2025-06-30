@@ -5,7 +5,7 @@
   "description": "Access personal dropbox folders",
   "author": {
     "name": "Cole Bittel",
-    "url": "@bittelc"
+    "url": "github:bittelc/golang-mcp-testing"
   },
   "server": {
     "type": "binary",
@@ -13,7 +13,9 @@
     "mcp_config": {
       "command": "${__dirname}/golang-mcp-testing",
       "args": [],
-      "env": {}
+      "env": {
+        "DROPBOX_API_KEY": "${user_config.dropbox_api_key}"
+      }
     }
   },
   "tools": [
@@ -23,7 +25,7 @@
     }
   ],
   "user_config": {
-    "api_key": {
+    "dropbox_api_key": {
       "type": "string",
       "title": "Dropbox API Key",
       "description": "Your Dropbox API key for authenticating",
