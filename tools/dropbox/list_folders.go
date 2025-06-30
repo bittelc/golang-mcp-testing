@@ -5,9 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
+	"log/slog"
 	"net/http"
 	"os"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/localrivet/gomcp/server"
 )
 
@@ -97,4 +100,18 @@ func HandleListDropboxFolders(ctx *server.Context, args ListDropboxFoldersArgs) 
 
 	ctx.Logger.Info("Successfully retrieved dropbox folders", "count", len(folders))
 	return folders, nil
+}
+
+func HelperCallHandlerDirectly(logger *slog.Logger) error {
+
+	serverContext := &server.Context{
+		Logger: logger,
+	}
+	folders, err := HandleListDropboxFolders(serverContext, ListDropboxFoldersArgs{Path: ""})
+	if err != nil {
+		log.Fatalf("Failed to list dropbox folders", "error", err)
+		return err
+	}
+	spew.Dump(folders)
+	return nil
 }
