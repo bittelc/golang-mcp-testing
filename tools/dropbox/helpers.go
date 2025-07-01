@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-const DROPBOX_API_URL = "https://api.dropboxapi.com/2/files/list_folder"
+const DROPBOX_FILES_API_URL = "https://api.dropboxapi.com/2/files"
 
 func handleFailedHttpReq(resp *http.Response) error {
 	// Read the response body to get more details about the error

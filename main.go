@@ -23,9 +23,9 @@ func main() {
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
 
-	// dropbox.HelperCallHandlerDirectly(logger) // for testing if needed
-	s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
-		dropbox.HandleListDropboxFolders)
+	dropbox.HelperCallHandlerDirectly(logger) // for testing if needed
+	// s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
+	// dropbox.HandleListDropboxFolders)
 
 	if err := s.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)

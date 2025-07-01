@@ -74,14 +74,13 @@ func HandleListDropboxFolders(ctx *server.Context, args ListDropboxFoldersArgs) 
 }
 
 func craftHttpReq(ctx *server.Context, args *ListDropboxFoldersArgs, apiKey string) (*http.Request, error) {
-	// TODO HARDCODED UNSET
 	if args.Path == "" || args.Path == "/" || args.Path == "." {
 		ctx.Logger.Info(`provided path does not exist. To reach root directory, use empty string, ""`)
 		ctx.Logger.Info("assuming root path for listing")
 		args.Path = ""
 	}
 
-	ctx.Logger.Info("request path,", args.Path)
+	ctx.Logger.Info("request path", "path", args.Path)
 	// Make HTTP request to Dropbox API
 	requestBody := map[string]any{
 		"include_deleted":                     false,
@@ -97,7 +96,7 @@ func craftHttpReq(ctx *server.Context, args *ListDropboxFoldersArgs, apiKey stri
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
-	req, err := http.NewRequest("POST", DROPBOX_API_URL, bytes.NewBuffer(jsonBody))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%v/list_folder", DROPBOX_FILES_API_URL), bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new HTTP request: %w", err)
 	}
