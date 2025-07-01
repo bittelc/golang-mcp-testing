@@ -27,7 +27,7 @@ type DropboxFolder struct {
 // HandleListDropBoxFolders implements the logic the list_dropbox_folders tool
 // This handler provides a listing of all folders and their metadata at
 // the provided path (ListDropboxFoldersArgs.Path).
-func HandleListDropboxFolders(ctx *server.Context, args ListDropboxFoldersArgs) (DropboxFolders, error) {
+func HandleListDropboxFolder(ctx *server.Context, args ListDropboxFoldersArgs) (DropboxFolders, error) {
 	ctx.Logger.Info("Handling ListDropboxFolders tool call")
 
 	// Get API key and print first two letters

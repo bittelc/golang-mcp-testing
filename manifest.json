@@ -20,8 +20,20 @@
   },
   "tools": [
     {
-      "name": "list_dropbox_folders",
-      "description": "List all dropbox folders within a given path."
+      "name": "dropbox_files_list_folder",
+      "description": "List all contents of a folder at a given path."
+    },
+    {
+      "name": "dropbox_files_download",
+      "description": "Download a file at a provided path."
+    },
+    {
+      "name": "terminal_write_files",
+      "description": "Write a file to the filesystem."
+    },
+    {
+      "name": "terminal_cat",
+      "description": "Read the content of the file at the provided path."
     }
   ],
   "user_config": {

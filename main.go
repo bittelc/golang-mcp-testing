@@ -5,8 +5,10 @@ import (
 	"log/slog"
 	"os"
 
+	"golang-mcp-testing/internal/utils"
 	"golang-mcp-testing/tools/config"
 	"golang-mcp-testing/tools/dropbox"
+	"golang-mcp-testing/tools/terminal"
 
 	"github.com/localrivet/gomcp/server"
 )
@@ -23,17 +25,22 @@ func main() {
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
 
-	s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
-		dropbox.HandleListDropboxFolders)
+	s.Tool("dropbox_list_dropbox_folder", "List all dropbox folders within a given path.",
+		dropbox.HandleListDropboxFolder)
 
-	s.Tool("files_download", "Download a file at a provided path.",
+	s.Tool("dropbox_files_download", "Download a file at a provided path.",
 		dropbox.HandleFilesDownload)
 
-	// For testing
-	// err := dropbox.HelperCallHandlerDirectly(logger, "HandleFilesDownload", dropbox.FilesDownloadArgs{Path: "/test-folder/Profile.pdf"})
-	// if err != nil {
-	// 	log.Fatalf("Direct call to handler failed: %v", err)
-	// }
+	s.Tool("terminal_write_file", "Write a file to the filesystem.",
+		terminal.HandleWriteFile)
+
+	// for testing - using the new generic handler utility
+	err := utils.CallHandlerDirectly(logger, "HandleWriteFile",
+		terminal.WriteFileArgs{Path: "/Users/bittelc/Desktop/file.txt", Content: "this content"},
+		terminal.HandleWriteFile)
+	if err != nil {
+		log.Fatalf("direct call to handler failed: %v", err)
+	}
 
 	if err := s.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)
