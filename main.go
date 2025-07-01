@@ -23,9 +23,17 @@ func main() {
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
 
-	dropbox.HelperCallHandlerDirectly(logger) // for testing if needed
-	// s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
-	// dropbox.HandleListDropboxFolders)
+	s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
+		dropbox.HandleListDropboxFolders)
+
+	s.Tool("files_download", "Download a file at a provided path.",
+		dropbox.HandleFilesDownload)
+
+	// For testing
+	// err := dropbox.HelperCallHandlerDirectly(logger, "HandleFilesDownload", dropbox.FilesDownloadArgs{Path: "/test-folder/Profile.pdf"})
+	// if err != nil {
+	// 	log.Fatalf("Direct call to handler failed: %v", err)
+	// }
 
 	if err := s.Run(); err != nil {
 		log.Fatalf("Server exited with error: %v", err)

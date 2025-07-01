@@ -5,12 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
-	"log/slog"
 	"net/http"
 	"os"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/localrivet/gomcp/server"
 )
 
@@ -119,17 +116,4 @@ func unmarshalFolders(body *[]byte) (DropboxFolders, error) {
 
 	// Convert to DropboxFolders type
 	return DropboxFolders(apiResponse.Entries), nil
-}
-
-func HelperCallHandlerDirectly(logger *slog.Logger) error {
-	serverContext := &server.Context{
-		Logger: logger,
-	}
-	folders, err := HandleListDropboxFolders(serverContext, ListDropboxFoldersArgs{Path: ""})
-	if err != nil {
-		log.Fatalf("Failed to list dropbox folders, %v", err)
-		return err
-	}
-	spew.Dump(folders)
-	return nil
 }
