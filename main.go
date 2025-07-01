@@ -23,7 +23,7 @@ func main() {
 	s.Tool("get_config", "Get the complete server configuration as JSON.",
 		config.HandleGetConfig)
 
-	// HelperCallHandlerDirectly(logger) // for testing if needed
+	// dropbox.HelperCallHandlerDirectly(logger) // for testing if needed
 	s.Tool("list_dropbox_folders", "List all dropbox folders within a given path.",
 		dropbox.HandleListDropboxFolders)
 
